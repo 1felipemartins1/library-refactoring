@@ -102,3 +102,16 @@ class Client:
         result += f"Points: {self.get_total_frequent_renter_points()}"
 
         return result
+
+    def html_statement(self) -> str:
+        result = f"<h1>Rental summary for <em>{self.name}</em></h1>\n<p>\n"
+        
+        for rental in self.rentals:
+            # show figures for this rental 
+            result += f"  {rental.book.title}: {rental.get_charge()}<br>\n"
+
+        # add footer lines 
+        result += f"</p>\n<p>Total: <em>{self.get_total_charge()}</em></p>\n"
+        result += f"<p>Points: <em>{self.get_total_frequent_renter_points()}</em></p>\n"
+
+        return result
