@@ -53,24 +53,27 @@ class Client:
     def add_rental(self, rental: Rental):
         self.rentals.append(rental)
 
-    def statement(self) -> str:
+    def get_total_charge(self) -> float:
+        total = 0
+        for rental in self.rentals:
+            total += rental.get_charge()
+        return total
 
-        total_amount = 0
-        frequent_renter_points = 0
+    def get_total_frequent_renter_points(self) -> int:
+        total = 0
+        for rental in self.rentals:
+            total += rental.get_frequent_renter_points()
+        return total
+
+    def statement(self) -> str:
         result = f"Rental summary for {self.name}\n"
         
         for rental in self.rentals:
-            amount = rental.get_charge()
-
-            # add frequent renter points 
-            frequent_renter_points += rental.get_frequent_renter_points()
-
             # show figures for this rental 
-            result += f"- {rental.book.title}: {amount}\n"
-            total_amount += amount
+            result += f"- {rental.book.title}: {rental.get_charge()}\n"
 
         # add footer lines 
-        result += f"Total: {total_amount}\n"
-        result += f"Points: {frequent_renter_points}"
+        result += f"Total: {self.get_total_charge()}\n"
+        result += f"Points: {self.get_total_frequent_renter_points()}"
 
         return result
